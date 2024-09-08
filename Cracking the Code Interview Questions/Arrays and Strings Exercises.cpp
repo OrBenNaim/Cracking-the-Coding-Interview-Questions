@@ -6,13 +6,16 @@
 
 using namespace std;
 
+
 // (1.1) Is Unique: Implement an algorithm to determine if a string has all unique characters. What if you cannot use additional data structures?
 int isUnique(char* s);
 void test_isUnique();
 
+
 // (1.2) Check Permutation: Given two strings, write a method to decide if one is a permutation of the other. 
 bool checkPermutation(const string& s1, const string& s2); 
 void test_checkPermutation();
+
 
 /* (1.3) URLify: Write a method to replace all spaces in a string with '%20'. You may assume that the string
 has sufficient space at the end to hold the additional characters, and that you are given the "true" length of the string. For example:
@@ -21,17 +24,29 @@ Output: "Mr%20John%20Smith" 	*/
 char* replaceSpaces(char* str, int length);
 void test_replaceSpaces();
 
-// (1.4) 
+
+/* (1.4) Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
+A palindrome is a word or phrase that is the same forwards and backwards. A permutation is a rearrangement of letters. The palindrome does not need to be limited to just dictionary words.
+EXAMPLE:
+Input: 'Tact Coa'
+Output: True (permutations: "taco cat", "atco eta", etc.) */
+bool permutationPalindrome();
+void test_permutationPalindrome();
 
 
 int main()
 {
-	test_isUnique();	
-	test_checkPermutation();
-	test_replaceSpaces();
+	// When you declare a function pointer in C++, you use a syntax like this: void (*funcPtr)();
+	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	cout << "\n" << endl;
+	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome};
 
+	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
+	{
+    	func();  // Calls the function pointed to by func
+		cout << "\n" << endl;
+	}
+	
 	return 0;
 }
 
@@ -50,7 +65,6 @@ void test_isUnique()
 	{
 		printf("\n'%s' hasn't all unique characters\n", str);
 	}
-	printf("\n");
 }
 
 
@@ -88,7 +102,6 @@ void test_checkPermutation()
 	{
 		cout << "The strings '" + str1 + "' and '" + str2 + "' are not permutations of each other" << endl;
 	}
-	cout << "\n" << endl;
 }
 
 
@@ -163,6 +176,18 @@ char* replaceSpaces(char *str, int length)
 	}
 
 	return str;
+}
+
+
+void test_permutationPalindrome()
+{
+    
+}
+
+
+bool permutationPalindrome()
+{
+    return false;
 }
 
 
