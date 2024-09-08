@@ -32,11 +32,11 @@ void test_isUnique()
 
 	if (isUnique(str))
 	{
-		printf("\n%s has all unique characters\n", str);
+		printf("\n'%s' has all unique characters\n", str);
 	}
 	else
 	{
-		printf("\n%s hasn't all unique characters\n", str);
+		printf("\n'%s' hasn't all unique characters\n", str);
 	}
 	printf("\n");
 }
@@ -68,6 +68,14 @@ void test_CheckPermutation()
 
 	cout << "\nOutput of Question 1.2:" << endl ;
 
+	if (CheckPermutation(str1, str2))
+	{
+		cout << "The strings '" + str1 + "' and '" + str2 + "' are permutations of each other" << endl;
+	}
+	else
+	{
+		cout << "The strings '" + str1 + "' and '" + str2 + "' are not permutations of each other" << endl;
+	}
 
 	cout << "\n" << endl ;
 }
@@ -77,7 +85,16 @@ bool CheckPermutation(const string &s1, const string &s2)
 {
     int sum1 = 0, sum2 = 0;
 
+	if (s1.length() != s2.length())
+	{
+		return false;
+	}
 
+	for (int i = 0; i < s1.length(); i++)
+	{
+		sum1 += s1[i];
+		sum2 += s2[i];
+	}
 
 	return (sum1 == sum2) ? true : false;
 }
