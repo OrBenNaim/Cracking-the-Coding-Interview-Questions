@@ -30,13 +30,14 @@ A palindrome is a word or phrase that is the same forwards and backwards. A perm
 EXAMPLE:
 Input: 'Tact Coa'
 Output: True (permutations: "taco cat", "atco eta", etc.) */
-bool permutationPalindrome();
+bool permutationPalindrome(const string& s);
 void test_permutationPalindrome();
 
 
 int main()
 {
 	// When you declare a function pointer in C++, you use a syntax like this: void (*funcPtr)();
+	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome};
@@ -46,7 +47,7 @@ int main()
     	func();  // Calls the function pointed to by func
 		cout << "\n" << endl;
 	}
-	
+
 	return 0;
 }
 
@@ -181,13 +182,51 @@ char* replaceSpaces(char *str, int length)
 
 void test_permutationPalindrome()
 {
-    
+    string str = "Tact Coa";
+
+	cout << "\nOutput of Question 1.4:" << endl;
+	
+	if (permutationPalindrome(str))
+	{
+		cout << "'" + str + "' is a permutation of a palindrome" << endl;
+	}
+	else
+	{
+		cout << "'" + str + "' is not a permutation of a palindrome" << endl;
+	}
 }
 
 
-bool permutationPalindrome()
+bool permutationPalindrome(const string& s)
 {
-    return false;
+    int checker = 0, shift = 0;
+	
+	for (int i = 0; s[i] != '\0'; i++)
+	{
+		shift = s[i] - 'a';
+		
+		if ((checker & (1 << shift)) == 0)	// bit i is '0'
+		{
+			checker |= 1 << shift;	// toggle '0'
+		}
+		else
+		{
+			checker &= ~(1 << shift);	// toggle '1'
+		}
+	}
+	
+	if (checker == 0) return true;
+
+	int temp = checker - 1;
+
+	if ((checker & temp) == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
