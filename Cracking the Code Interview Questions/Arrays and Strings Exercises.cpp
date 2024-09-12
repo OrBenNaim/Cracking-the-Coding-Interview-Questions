@@ -42,7 +42,8 @@ pales, pale -> true
 pale, bale -> true
 pale, bake -> false 
 */
-
+int checkOneAway(const char* s1, const char* s2);
+void test_checkOneAway();
 
 
 int main()
@@ -51,14 +52,14 @@ int main()
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome};
+	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome,
+		test_checkOneAway};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
     	func();  // Calls the function pointed to by func
 		cout << "\n" << endl;
 	}
-
 	return 0;
 }
 
@@ -239,5 +240,66 @@ bool permutationPalindrome(const string& s)
 		return false;
 	}
 }
+
+
+void test_checkOneAway()
+{	
+	printf("Output of Question 1.4:\n");
+
+	const char* optional_strings[5] = {"pale", "pales", "ple", "bale", "bake"}; 
+	
+	for (int i = 0; i < 5 - 1; i++)
+	{
+		for (int j = i; j < 5; j++)
+		{
+			if(checkOneAway(optional_strings[i], optional_strings[j]))
+			{
+			printf("'%s', '%s' -> true\n", optional_strings[i], optional_strings[j]);
+			}
+			else
+			{
+				printf("'%s', '%s' -> false\n", optional_strings[i], optional_strings[j]);
+			}
+		}
+		
+	}
+}
+
+
+int checkOneAway(const char *s1, const char *s2)
+{
+    int difference_flag = 0, n1 = strlen(s1), n2 = strlen(s2);
+
+	if (abs(n1 - n2) > 1) return 0;
+
+	const char* smaller_s = (n1 < n2) ? s1:s2;
+	const char* larger_s = (n1 < n2) ? s2:s1;
+
+	int i = 0, j = 0;
+
+	while ((smaller_s[i] != '\0') && (larger_s[j] != '\0'))
+	{
+		if (smaller_s[i] != larger_s[j])
+		{
+			if (difference_flag) return 0;
+
+			difference_flag = 1;
+
+			if (n1 == n2)
+			{
+				i++;	// On Replace, increament the smaller_s index too.
+			}
+		}
+		else
+		{
+			i++;	// On Replace, increament the smaller_s index too.
+		}
+		j++; // Always increament the larger_s index.
+	}
+	
+	return 1;
+}
+
+
 
 
