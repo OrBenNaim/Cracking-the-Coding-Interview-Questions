@@ -46,6 +46,14 @@ int checkOneAway(const char* s1, const char* s2);
 void test_checkOneAway();
 
 
+/* (1.6) String Compression: Implement a method to perform basic string compression using the counts of repeated characters.
+For example, the string aabcccccaaa would become a2blc5a3. If the "compressed" string would not become smaller than the original string,
+your method should return the original string. You can assume the string has only uppercase and lowercase letters (a - z). 
+*/
+string compression(string& s);
+void test_compression();
+
+
 int main()
 {
 	// When you declare a function pointer in C++, you use a syntax like this: void (*funcPtr)();
@@ -53,7 +61,7 @@ int main()
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome,
-		test_checkOneAway};
+		test_checkOneAway, test_compression};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -301,5 +309,52 @@ int checkOneAway(const char *s1, const char *s2)
 }
 
 
+void test_compression()
+{
+	cout << "Output of Question 1.6:" << endl;
+	
+	string str = "aabcccccaaa";
+	
+	cout << "Original string: 'aabcccccaaa', Compressd string: '" + compression(str) + "'" << endl;
+}
 
 
+string compression(string& s)
+{
+	int i = 1, wr_idx = 1;
+
+	if (s[0] == '\0')
+	{
+		return s;
+	} 
+	char temp = s[0];
+	
+	bool repeated = false;
+
+	for (; s[i] != '\0'; i++)
+	{
+		if (temp != s[i])
+		{
+			temp = s[i];
+		
+			s[wr_idx] = i - (wr_idx - 1) + '0';	// convert int to char
+
+			s[++wr_idx] = temp;
+
+			wr_idx++;
+		}
+
+		else if (!repeated)
+		{
+			repeated = true;
+		}
+	}	
+
+	if (repeated)
+	{
+		s[wr_idx] = (i - wr_idx + 1) + '0';	// convert int to char
+		s[wr_idx + 1] = '\0';
+	}
+
+	return s;
+}
