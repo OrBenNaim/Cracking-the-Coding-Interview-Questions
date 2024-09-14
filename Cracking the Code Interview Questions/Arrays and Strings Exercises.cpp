@@ -3,6 +3,7 @@
 #include <string.h>
 #include <iostream>
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -315,46 +316,45 @@ void test_compression()
 	
 	string str = "aabcccccaaa";
 	
-	cout << "Original string: 'aabcccccaaa', Compressd string: '" + compression(str) + "'" << endl;
+	cout << "Original string: '" + str + "'";
+	cout << ", Compressd string: '" + compression(str) + "'\n" << endl;
 }
 
 
 string compression(string& s)
 {
-	int i = 1, wr_idx = 1;
-
 	if (s[0] == '\0')
 	{
 		return s;
-	} 
-	char temp = s[0];
-	
-	bool repeated = false;
-
-	for (; s[i] != '\0'; i++)
-	{
-		if (temp != s[i])
-		{
-			temp = s[i];
-		
-			s[wr_idx] = i - (wr_idx - 1) + '0';	// convert int to char
-
-			s[++wr_idx] = temp;
-
-			wr_idx++;
-		}
-
-		else if (!repeated)
-		{
-			repeated = true;
-		}
-	}	
-
-	if (repeated)
-	{
-		s[wr_idx] = (i - wr_idx + 1) + '0';	// convert int to char
-		s[wr_idx + 1] = '\0';
 	}
 
-	return s;
+	bool repeated = false;	// Indicates if there are repeated characters in s
+
+	list<char> compressed_list;
+
+	int ref_idx = 0, curr_idx = 1;
+
+	for (; s[curr_idx] != '\0'; curr_idx++)
+	{
+		if (s[ref_idx] == s[curr_idx])	// There is sequence of repeated characters
+		{
+			repeated = true;
+			continue;
+		}
+
+		if (repeated) repeated = false;		// The sequence of repeated characters is over
+
+		compressed_list.push_back(s[ref_idx]);		// Copy the reference char to the list
+		compressed_list.push_back((curr_idx - ref_idx) + '0');	// write the number of repetitions of the char
+
+		ref_idx = curr_idx;		// If s[ref_idx] != s[curr_idx], update ref_idx
+	}
+
+	// Add the last character of s and its number of repetitions:
+	compressed_list.push_back(s[ref_idx]);
+	compressed_list.push_back((curr_idx - ref_idx) + '0');
+
+	string compressed_str(compressed_list.begin(), compressed_list.end());	// Use constructor to convert list object to string object
+
+	return (s.length() > compressed_str.length()) ? compressed_str : s; // return the shorter string
 }
