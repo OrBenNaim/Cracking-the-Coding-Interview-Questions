@@ -323,10 +323,7 @@ void test_compression()
 
 string compression(string& s)
 {
-	if (s[0] == '\0')
-	{
-		return s;
-	}
+	if (s[0] == '\0') return s;
 
 	list<char> compressed_list;
 
