@@ -328,7 +328,7 @@ string compression(string& s)
 		return s;
 	}
 
-	bool repeated = false;	// Indicates if there are repeated characters in s
+	bool repeated = false;	// Indicates if there are sequence of repeated characters in s
 
 	list<char> compressed_list;
 
