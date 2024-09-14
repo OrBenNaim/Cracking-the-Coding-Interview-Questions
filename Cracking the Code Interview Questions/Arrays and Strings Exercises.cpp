@@ -328,26 +328,19 @@ string compression(string& s)
 		return s;
 	}
 
-	bool repeated = false;	// Indicates if there are sequence of repeated characters in s
-
 	list<char> compressed_list;
 
 	int ref_idx = 0, curr_idx = 1;
 
 	for (; s[curr_idx] != '\0'; curr_idx++)
 	{
-		if (s[ref_idx] == s[curr_idx])	// There is sequence of repeated characters
+		if (s[ref_idx] != s[curr_idx])	// There is sequence of repeated characters
 		{
-			repeated = true;
-			continue;
+			compressed_list.push_back(s[ref_idx]);		// Copy the reference char to the list
+			compressed_list.push_back((curr_idx - ref_idx) + '0');	// write the number of repetitions of the char
+
+			ref_idx = curr_idx;		// If s[ref_idx] != s[curr_idx], update ref_idx
 		}
-
-		if (repeated) repeated = false;		// The sequence of repeated characters is over
-
-		compressed_list.push_back(s[ref_idx]);		// Copy the reference char to the list
-		compressed_list.push_back((curr_idx - ref_idx) + '0');	// write the number of repetitions of the char
-
-		ref_idx = curr_idx;		// If s[ref_idx] != s[curr_idx], update ref_idx
 	}
 
 	// Add the last character of s and its number of repetitions:
