@@ -1,8 +1,6 @@
 # Ignore VSCode workspace settings
 .vscode/
 
-.vscode/Cracking the Coding Interview
-
 # Ignore build folders
 dist/
 build/
