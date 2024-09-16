@@ -67,7 +67,7 @@ int main()
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
     	func();  // Calls the function pointed to by func
-		cout << "\n" << endl;
+		cout << "\nHi\n" << endl;
 	}
 	return 0;
 }
