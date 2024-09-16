@@ -429,7 +429,9 @@ void rotate(int **img, int N)
 
 			img[N - 1 - col][row] = img[N - 1 - row][N - 1 - col];	// move bottom to left 
 
-			img[N - 1 - row][N - 1 - col] = temp_top;	// move top to right
+			img[N - 1 - row][N - 1 - col] = img[col][N - 1 - row];	// move right to bottom 
+
+			img[col][N - 1 - row] = temp_top;	// move top to right
 		}
 	}
 
