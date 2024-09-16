@@ -58,16 +58,18 @@ void test_compression();
 /* (1.7) Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
 bytes, write a method to rotate the image by 90 degrees. Can you do this in place? 
 */
+void rotate(int** img, int N);
+void test_rotate();
 
 
 int main()
 {
-	// When you declare a function pointer in C++, you use a syntax like this: void (*funcPtr)();
+	// When you declare a function pointer in C++, you can use the following syntax: void (*funcPtr)();
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome,
-		test_checkOneAway, test_compression};
+		test_checkOneAway, test_compression, test_rotate};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -326,6 +328,7 @@ void test_compression()
 }
 
 
+
 string compression(string& s)
 {
 	if (s[0] == '\0') return s;
@@ -352,4 +355,83 @@ string compression(string& s)
 	string compressed_str(compressed_list.begin(), compressed_list.end());	// Use constructor to convert list object to string object
 
 	return (s.length() > compressed_str.length()) ? compressed_str : s; // return the shorter string
+}
+
+
+void test_rotate()
+{
+	cout << "Output of Question 1.7:" << endl;
+
+	int size;
+
+	cout << "Enter the size of your 2d array: ";	// Matrix of NxN 
+	cin >> size;
+
+	// Dynamically allocate a 2D array:
+	int** image = new int*[size];		// // Array of pointers
+
+	for (int i = 0; i < size; i++) 
+	{
+        image[i] = new int[size];  // Dynamically allocate each row
+    }
+	
+	int i = 1;
+	cout << "\n The image values before 90 degrees rotation:" << endl;
+
+	// Initialize the array:
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			image[row][col] = i;
+			i++;
+
+			cout << image[row][col] << " ";		// Print the array values before rotation of 90 degrees
+		}
+		cout << endl;
+	}
+
+	rotate(image, size);
+	cout << "\n The image values after 90 degrees rotation:" << endl;
+
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			cout << image[row][col] << " ";		// Print the array values after rotation of 90 degrees
+		}
+		cout << endl;
+	}
+
+
+	// Deallocate memory:
+    for (int i = 0; i < size; i++) 
+	{
+        delete[] image[i];  // Deallocate each row
+    }
+
+    delete[] image;  // Deallocate the array of pointers
+
+}
+
+
+void rotate(int **img, int N)
+{
+    int temp_top;
+
+	for (int row = 0; row < N/2; row++)
+	{
+		for (int col = row; col < N - 1 - row; col++)
+		{
+			temp_top = img[row][col];	// copy the top value
+
+			img[row][col] = img[N - 1 - col][row];	// move left to top 
+
+			img[N - 1 - col][row] = img[N - 1 - row][N - 1 - col];	// move bottom to left 
+
+			img[N - 1 - row][N - 1 - col] = temp_top;	// move top to right
+		}
+	}
+
+	
 }
