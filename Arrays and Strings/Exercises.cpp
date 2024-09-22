@@ -542,30 +542,31 @@ void test_zeroMat()
 
 void zeroMat(int **mat, int M, int N)
 {
-	bool zeroInRow = false; // Indicates if a specific row has a zero.
-	bool ThereIsZero = false; // Indicates if there is at least one zero in the entire matrix.
+	bool rowHasZero = false; // Indicates if a specific row has a zero.
+	bool wasZero = false; // Indicates if there is at least one zero in the entire matrix.
 
+	// Search zeros:
 	for (int row = 0; row < M; row++)
 	{
 		for (int col = 0; col < N; col++)
 		{
 			if (mat[row][col] == 0)
 			{
-				zeroInRow = true;
-				ThereIsZero = true;
-				mat[0][col] = 0;
+				rowHasZero = true;
+				wasZero = true;
+				mat[0][col] = 0;	// Set the appropriate column in the first row to be zero.
 			}
 		}
-		if (zeroInRow)
+		if (rowHasZero)
 		{
 			for (int column = 0; column < N; column++)
 			{
 				mat[row][column] = 0; // Reset a specific row.
 			}
-			zeroInRow = false;
+			rowHasZero = false;
 		}
 	}
-	if (!ThereIsZero) return;
+	if (!wasZero) return;
 
 	int row = 1;
 
