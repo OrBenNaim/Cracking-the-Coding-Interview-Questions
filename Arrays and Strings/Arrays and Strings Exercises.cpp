@@ -62,6 +62,12 @@ void rotate(int** img, int N);
 void test_rotate();
 
 
+/* (1.8) Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
+*/
+void zeroMat(int** mat, int M, int N);
+void test_zeroMat();
+
+
 int main()
 {
 	// When you declare a function pointer in C++, you can use the following syntax: void (*funcPtr)();
@@ -69,7 +75,7 @@ int main()
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome,
-		test_checkOneAway, test_compression, test_rotate};
+		test_checkOneAway, test_compression, test_rotate, test_zeroMat};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -364,55 +370,78 @@ void test_rotate()
 
 	int size;
 
-	cout << "Enter the size of your 2d array: ";	// Matrix of NxN 
+	cout << "Enter the size of your 2d array (NxN matrix): ";	// Matrix of NxN 
 	cin >> size;
 
-	// Dynamically allocate a 2D array:
-	int** image = new int*[size];		// // Array of pointers
+	int** image = nullptr;
 
-	for (int i = 0; i < size; i++) 
+	try
 	{
-        image[i] = new int[size];  // Dynamically allocate each row
+		// Dynamically allocate a 2D array:
+		image = new int*[size];		// Array of pointers
+
+		for (int i = 0; i < size; i++) 
+		{
+			image[i] = new int[size];  // Dynamically allocate each row
+		}
+		
+		int i = 1;
+		cout << "\n The image values before 90 degrees rotation:" << endl;
+
+		// Initialize the array:
+		for (int row = 0; row < size; row++)
+		{
+			for (int col = 0; col < size; col++)
+			{
+				image[row][col] = i;
+				i++;
+
+				cout << image[row][col] << " ";		// Print the array values before rotation of 90 degrees
+			}
+			cout << endl;
+		}
+
+		rotate(image, size);
+		cout << "\n The image values after 90 degrees rotation:" << endl;
+
+		
+		// Print the array values after rotation of 90 degrees:
+		for (int row = 0; row < size; row++)
+		{
+			for (int col = 0; col < size; col++)
+			{
+				cout << image[row][col] << " ";		
+			}
+			cout << endl;
+		}
+	}
+
+	catch (const bad_alloc& e)
+	{
+		cerr << "Memory allocation failed: " << e.what() << endl;
+		
+		// Clean up memory in case of allocation failure
+        if (image) 
+		{
+            for (int i = 0; i < size; i++)
+			{
+				delete[] image[i];  // Deallocate each row
+			}
+			delete[] image;  // Deallocate the array of pointers
+		}
+		return;
     }
-	
-	int i = 1;
-	cout << "\n The image values before 90 degrees rotation:" << endl;
-
-	// Initialize the array:
-	for (int row = 0; row < size; row++)
-	{
-		for (int col = 0; col < size; col++)
-		{
-			image[row][col] = i;
-			i++;
-
-			cout << image[row][col] << " ";		// Print the array values before rotation of 90 degrees
-		}
-		cout << endl;
-	}
-
-	rotate(image, size);
-	cout << "\n The image values after 90 degrees rotation:" << endl;
-
-	for (int row = 0; row < size; row++)
-	{
-		for (int col = 0; col < size; col++)
-		{
-			cout << image[row][col] << " ";		// Print the array values after rotation of 90 degrees
-		}
-		cout << endl;
-	}
 
 
-	// Deallocate memory:
+	// Deallocate memory if Memory allocation succeeded:
     for (int i = 0; i < size; i++) 
 	{
         delete[] image[i];  // Deallocate each row
     }
 
     delete[] image;  // Deallocate the array of pointers
-
 }
+
 
 
 void rotate(int **img, int N)
@@ -436,4 +465,118 @@ void rotate(int **img, int N)
 	}
 
 	
+}
+
+
+void test_zeroMat()
+{
+	cout << "Output of Question 1.8:" << endl;
+
+	int M, N;
+
+	cout << "Enter the size of your 2d array (MxN matrix): ";	// Matrix of MxN 
+	cin >> M >> N;
+
+	int** matrix = nullptr;
+
+	try
+	{
+		// Dynamically allocate a 2D array:
+		matrix = new int*[M];		// Array of pointers
+	
+		for (int i = 0; i < M; i++)
+		{
+			matrix[i] = new int[N];		// Dynamically allocate each row
+		}
+
+		// Initialize the array:
+		for (int row = 0; row < M; row++)
+		{
+			for (int col = 0; col < N; col++)
+			{
+				matrix[row][col] = rand() % 11;	// get a value from the range 0 to 11-1 (0-10)
+
+				cout << matrix[row][col] << " ";		// Print the array values before rotation of 90 degrees
+			}
+			cout << endl;
+		}
+
+		zeroMat(matrix, M, N);
+
+		cout << "\n The matrix values after Reset:" << endl;
+
+		for (int row = 0; row < M; row++)
+		{
+			for (int col = 0; col < N; col++)
+			{
+				cout << matrix[row][col] << " ";	// Print the matrix values after reset:
+			}
+			cout << endl;
+		}
+	}
+
+	catch(const bad_alloc& e)
+	{
+		cerr << "Memory allocation failed: " << e.what() << endl;
+
+		// Clean up memory in case of allocation failure
+        if (matrix) 
+		{
+            for (int i = 0; i < M; i++)
+			{
+				delete[] matrix[i];  // Deallocate each row
+			}
+			delete[] matrix;  // Deallocate the array of pointers
+		}
+		return;
+	}
+	
+	// Deallocate memory if Memory allocation succeeded:
+	for (int i = 0; i < N; i++)
+	{
+		delete[] matrix[i]; // Deallocate each row
+	}
+	delete[] matrix;	// Deallocate the array of pointers
+}
+
+
+void zeroMat(int **mat, int M, int N)
+{
+	bool zeroInRow = false; // Indicates if a specific row has a zero.
+	bool ThereIsZero = false; // Indicates if there is at least one zero in the entire matrix.
+
+	for (int row = 0; row < M; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			if (mat[row][col] == 0)
+			{
+				zeroInRow = true;
+				ThereIsZero = true;
+				mat[0][col] = 0;
+			}
+		}
+		if (zeroInRow)
+		{
+			for (int column = 0; column < N; column++)
+			{
+				mat[row][column] = 0; // Reset a specific row.
+			}
+			zeroInRow = false;
+		}
+	}
+	if (!ThereIsZero) return;
+
+	int row = 1;
+
+	for (int col = 0; col < N; col++)	// Reset columns
+	{
+		if (mat[0][col] == 0)
+		{
+			for (row = 1; row < M; row++)
+			{
+				mat[row][col] = 0; 	// Reset the entire column.
+			}
+		}
+	}
 }
