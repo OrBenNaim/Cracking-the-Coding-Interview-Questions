@@ -622,4 +622,11 @@ bool isRotation(string s1, string s2)
 	{
 
 	}
+
+	if (isSubstring(s1, s2.substr(0, rotPoint)))	// substr(int start_idx, int length) is a member of <string> class.
+	{
+		return true;
+	}
+
+	return false;
 }
