@@ -68,6 +68,14 @@ void zeroMat(int** mat, int M, int N);
 void test_zeroMat();
 
 
+/* (1.9) String Rotation:Assumeyou have a method isSubstringwhich checks if oneword is a substring
+of another. Given two strings, sl and s2, write code to check if s2 is a rotation of sl using only one
+call to isSubstring (e.g., "waterbottle" is a rotation of"erbottlewat"). 
+*/
+void isRotation(string s1, string s2);
+void test_isRotation();
+
+
 int main()
 {
 	// When you declare a function pointer in C++, you can use the following syntax: void (*funcPtr)();
@@ -75,7 +83,7 @@ int main()
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_isUnique, test_checkPermutation, test_replaceSpaces, test_permutationPalindrome,
-		test_checkOneAway, test_compression, test_rotate, test_zeroMat};
+		test_checkOneAway, test_compression, test_rotate, test_zeroMat, test_isRotation};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -540,6 +548,7 @@ void test_zeroMat()
 }
 
 
+
 void zeroMat(int **mat, int M, int N)
 {
 	bool rowHasZero = false; // Indicates if a specific row has a zero.
@@ -580,4 +589,17 @@ void zeroMat(int **mat, int M, int N)
 			}
 		}
 	}
+}
+
+
+void test_isRotation()
+{
+	
+}
+
+
+void isRotation(string s1, string s2)
+{
+
+	
 }
