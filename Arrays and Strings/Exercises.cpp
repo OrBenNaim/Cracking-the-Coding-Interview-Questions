@@ -70,9 +70,9 @@ void test_zeroMat();
 
 /* (1.9) String Rotation:Assumeyou have a method isSubstringwhich checks if oneword is a substring
 of another. Given two strings, sl and s2, write code to check if s2 is a rotation of sl using only one
-call to isSubstring (e.g., "waterbottle" is a rotation of"erbottlewat"). 
+call to isSubstring (e.g., "waterbottle" is a rotation of "erbottlewat"). 
 */
-void isRotation(string s1, string s2);
+bool isRotation(string s1, string s2);
 void test_isRotation();
 
 
@@ -594,11 +594,23 @@ void zeroMat(int **mat, int M, int N)
 
 void test_isRotation()
 {
+	cout << "Output of Question 1.9:" << endl;
 	
+	string str1 = "waterbottle", str2 = "erbottlewat";
+
+	if (isRotation(str1, str2))
+	{
+		cout << str1 << " is rotation of: " << str2 << endl;
+
+	}
+	else
+	{
+		cout << str1 << " is not rotation of: " << str2 << endl;
+	}
 }
 
 
-void isRotation(string s1, string s2)
+bool isRotation(string s1, string s2)
 {
 
 	
