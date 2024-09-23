@@ -613,5 +613,8 @@ void test_isRotation()
 bool isRotation(string s1, string s2)
 {
 
+	if (s1.length() != s2.length()) return false;
 	
+	int rotPoint = -1; // rotPoint = - 1 means that rotation point not found
+	int i = 0, j = s2.length() - 1; 
 }
