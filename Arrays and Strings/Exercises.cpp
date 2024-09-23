@@ -68,11 +68,12 @@ void zeroMat(int** mat, int M, int N);
 void test_zeroMat();
 
 
-/* (1.9) String Rotation:Assumeyou have a method isSubstringwhich checks if oneword is a substring
+/* (1.9) String Rotation: Assume you have a method isSubstring which checks if one word is a substring
 of another. Given two strings, sl and s2, write code to check if s2 is a rotation of sl using only one
 call to isSubstring (e.g., "waterbottle" is a rotation of "erbottlewat"). 
 */
 bool isRotation(string s1, string s2);
+bool isSubstring(string s1, string s2);
 void test_isRotation();
 
 
@@ -540,7 +541,7 @@ void test_zeroMat()
 	}
 	
 	// Deallocate memory if Memory allocation succeeded:
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < M; i++)
 	{
 		delete[] matrix[i]; // Deallocate each row
 	}
@@ -615,18 +616,46 @@ bool isRotation(string s1, string s2)
 
 	if (s1.length() != s2.length()) return false;
 	
-	int rotPoint = -1; // rotPoint = - 1 means that rotation point not found
+	int rotPoint = -1;		// rotPoint = - 1 means that rotation point not found
+
 	int i = 0, j = s2.length() - 1; 
 
-	while (j >= 0)	// Search the rotation point
+	for (; j >= 0; j--)		// Search the rotation point
 	{
+		if (s1[i] == s2[j])
+		{
+			rotPoint = j;
+			break;
+		}
+	}
+	
+	if (rotPoint == -1) return false;
 
+	j = rotPoint;
+
+	for (; s2[j] != '\0'; j++)	// Check that the right part of s2 is the left part of s1
+	{
+		if (s1[i] != s2[j])
+		{
+			return false;
+		}
+		i++;
 	}
 
-	if (isSubstring(s1, s2.substr(0, rotPoint)))	// substr(int start_idx, int length) is a member of <string> class.
+	if (isSubstring(s1, s2.substr(0, rotPoint)))	// substr(int start_idx, int length) is a member of class <string>
 	{
 		return true;
 	}
 
+	return false;
+}
+
+
+bool isSubstring(string s1, string s2)	// This function written only for checking the code of isRotation(). In problem 1.9 we assume that we have the function isSubstring()
+{
+	if (s1.find(s2) != string::npos) 
+	{
+		return true;
+	}
 	return false;
 }
