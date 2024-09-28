@@ -11,6 +11,14 @@ int main() {
     // Insert elements at the end
     list.InsertAtEnd(30);
     list.InsertAtEnd(40);
+    
+
+    // Print the list
+    cout << "\nThe current Linked List: ";
+    list.Print();
+    cout << endl;
+
+    list.deleteByVal(10);
 
     // Print the list
     cout << "\nThe current Linked List: ";

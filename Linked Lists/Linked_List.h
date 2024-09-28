@@ -86,6 +86,95 @@ class Single_Linked_List
                 m_tail = newNode;   // Move tail to the new node
             }
         }
+
+
+        void deleteByNode(Node<T>* node)
+        {
+            if (m_head == nullptr || node == nullptr) return;   // Linked List is empty or invalid node
+
+            // If the node to be deleted is the head:
+            if (m_head == node) 
+            {
+                Node<T>* temp = m_head;      // Store current head
+
+                m_head = m_head->m_next;     // Move the head to the next node
+
+                delete temp;                 // Delete the old head
+
+                // If the list is now empty, update the tail
+                if (m_head == nullptr) 
+                {
+                    m_tail = nullptr;
+                }
+                return;
+            }
+
+            Node<T>* current = m_head;
+
+            // Find the node preceding the one to be deleted:
+            while (current->m_next != nullptr && current->m_next != node)
+            {
+                current = current->m_next;
+            }
+            
+            if (current->m_next == nullptr) return;     // The node doesn't exists in the linked list
+
+            if (m_tail == node)
+            {
+                m_tail = current;     // Update tail to point to the previous node
+            }
+            
+            current->m_next = node->m_next;     // Bypass the node
+
+            delete node;    // Free memory
+        }
+
+
+        void deleteByVal(T val)
+        {
+            if (m_head == nullptr) return;  // Linked List is empty
+
+            else if (m_head->m_data == val)
+            {
+                Node<T>* temp = m_head;
+
+                m_head = m_head->m_next;
+
+                delete temp;
+
+                // If the list is now empty, update the tail:
+                if (m_head == nullptr)
+                {
+                    m_tail = nullptr;
+                }
+
+                return;
+            }
+            
+            Node<T>* current = m_head;
+
+            // Find the node preceding the one to be deleted:
+            while (current->m_next != nullptr && current->m_next->m_data != val)
+            {
+                current = current->m_next;
+            }
+
+            // If the node doesn't exist in the linked list, return:
+            if (current->m_next == nullptr) return; 
+
+            // If the node to be deleted is the tail:
+            if (current->m_next == m_tail)
+            {
+                m_tail = current;   // Update tail to point to the previous node
+            }
+
+            Node<T>* nodeToDelete = current->m_next;  // Store the node to delete
+
+            current->m_next = nodeToDelete->m_next;   // Bypass the node
+
+            delete nodeToDelete;  // Free memory
+        }
+
         
         void Print() const
         {
