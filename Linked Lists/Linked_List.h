@@ -2,6 +2,8 @@
 #define LINKEDLIST_H
 
 #include <iostream>
+#include "../Iterator Class/Generic_Iterator.h"
+
 using namespace std;
 
 template <class T>
@@ -11,7 +13,20 @@ struct Node
     Node* m_next;     // Pointer to the next node
 
     // Constructor to initialize node data
-    Node(T data=NULL) : m_data(data), m_next(nullptr) {}
+    Node(T data=T()) : m_data(data), m_next(nullptr) {}
+
+    friend ostream& operator<<(ostream& os, const Node<T>& node)
+    {
+        os << node.m_data;
+        return os;
+    }
+
+    friend istream& operator>>(istream& is, const Node<T>& node)
+    {
+        is >> node.m_data; // Input into the current element
+        
+        return is;
+    }
 };
 
 
@@ -23,13 +38,27 @@ class Single_Linked_List
 
         Node<T>* m_tail;    // The end of the Linked List
 
+        size_t m_size;      // Count how many items exist
+
     public:
-        Single_Linked_List() : m_head(nullptr), m_tail(nullptr) {};   // Default constructor
+        Single_Linked_List() : m_head(nullptr), m_tail(nullptr), m_size(0) {}   // Default constructor
+
+
+        Single_Linked_List(const T* arr, size_t size) : m_head(nullptr), m_tail(nullptr), m_size(0)  // Constructor 
+        {
+            for (size_t i = 0; i < size; i++)
+            {
+                InsertAtEnd(arr[i]);
+            }   
+        }
+
 
         Single_Linked_List(const Single_Linked_List& other)   // CC
         {
             m_head = nullptr;
             m_tail = nullptr;
+
+            m_size = other.m_size;
 
             Node<T>* current = other.m_head;  
 
@@ -41,6 +70,7 @@ class Single_Linked_List
             }
         }
         
+
         ~Single_Linked_List()  // Destructor
         {
             Node<T>* current = m_head;
@@ -55,6 +85,7 @@ class Single_Linked_List
             }
         }
 
+
         void InsertAtHead(T data)
         {
             Node<T>* newNode = new Node<T>(data);
@@ -67,7 +98,10 @@ class Single_Linked_List
             {
                 m_tail = newNode;   // Update tail as well
             }
+
+            m_size++;
         }
+
 
         void InsertAtEnd(T data)
         {
@@ -85,16 +119,20 @@ class Single_Linked_List
 
                 m_tail = newNode;   // Move tail to the new node
             }
+
+            m_size++;
         }
 
 
-        void deleteByNode(Node<T>* node)
+        void deleteNode(Node<T>* node)
         {
             if (m_head == nullptr || node == nullptr) return;   // Linked List is empty or invalid node
 
             // If the node to be deleted is the head:
             if (m_head == node) 
             {
+                m_size--;
+                
                 Node<T>* temp = m_head;      // Store current head
 
                 m_head = m_head->m_next;     // Move the head to the next node
@@ -127,15 +165,19 @@ class Single_Linked_List
             current->m_next = node->m_next;     // Bypass the node
 
             delete node;    // Free memory
+
+            m_size--;
         }
 
 
-        void deleteByVal(T val)
+        void deleteNode(T val)      // Delete the first node with the given value
         {
             if (m_head == nullptr) return;  // Linked List is empty
 
-            else if (m_head->m_data == val)
+            else if (m_head->m_data == val)     // If the head node is the one to be deleted
             {
+                m_size--;
+                
                 Node<T>* temp = m_head;
 
                 m_head = m_head->m_next;
@@ -173,6 +215,8 @@ class Single_Linked_List
             current->m_next = nodeToDelete->m_next;   // Bypass the node
 
             delete nodeToDelete;  // Free memory
+
+            m_size--;
         }
 
         
@@ -186,6 +230,43 @@ class Single_Linked_List
             }
             cout << "nullptr" << endl; // Indicate the end of the linked list
         }
+
+
+        class Iterator : public Generic_Iterator<Node<T>>
+        {
+            public:
+                
+                Iterator(Node<T>* ptr=nullptr) : Generic_Iterator<Node<T>>(ptr) {}
+                
+                // Prefix increment operator (++current_ptr) to move the iterator to the next element:
+                Iterator& operator++() override
+                {
+                   if (this->current_ptr) 
+                    {
+                        this->current_ptr = static_cast<Node<T>*>(this->current_ptr)->m_next; // Move to next node
+                    }
+                    return *this;
+                }
+
+                
+                /*The language design convention is to use int as the dummy argument. 
+                It has no functional meaning in the post-increment operator itself, but using int follows the standard C++ convention,
+                ensuring consistency across all custom iterator implementations.
+                */
+                Iterator operator++(int) override     // Postfix increment operator (current_ptr++) to move the iterator to the next element:   
+                {
+                    Iterator temp = *this;
+                    ++(*this);
+                    return temp;
+                }
+        };
+
+        Iterator begin() const {return Iterator(m_head);}   // Iterator to the beginning of the Linked List
+
+
+        Iterator end() const {return Iterator(nullptr);}
+
+        
 };
 
 #endif // LINKEDLIST_H

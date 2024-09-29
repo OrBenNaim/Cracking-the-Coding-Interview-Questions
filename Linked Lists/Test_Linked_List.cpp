@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Linked_List.h"
 
-int main() {
+int main() 
+{
     Single_Linked_List<int> list;
 
     // Insert elements at the head
@@ -18,7 +19,7 @@ int main() {
     list.Print();
     cout << endl;
 
-    list.deleteByVal(10);
+    list.deleteNode(10);
 
     // Print the list
     cout << "\nThe current Linked List: ";
