@@ -7,7 +7,7 @@ int main() {
     // Create a single linked list of integers
     Single_Linked_List<int> linkedList;
 
-    // Insert some elements into the list
+    // Insert some elements into the list directly
     linkedList.InsertAtEnd(10);
     linkedList.InsertAtEnd(20);
     linkedList.InsertAtEnd(30);
@@ -18,32 +18,39 @@ int main() {
     linkedList.Print();
 
     // Use the iterator to traverse and print the list elements
-    cout << "\nTraversing the list using the iterator: \n";
+    cout << "\nTraversing the list using the iterator: ";
 
-    Single_Linked_List<int>::Iterator it = linkedList.begin();
+    cout << "\n";
 
-    cout << *it << " ";
-    ++it;
-    cout << *it << " ";
-    // it++;
-    // cout << *it << " ";
+    for (auto it = linkedList.begin(); it != linkedList.end(); ++it) {
+        cout << it->m_data << " -> ";
+    }
+    cout << nullptr << endl;
 
-    // for (auto it = linkedList.begin(); it != linkedList.end(); ++it) {
-    //     cout << *it << " ";
-    // }
-    cout << endl;
 
-    // // Delete an element
-    // linkedList.deleteNode(20);
+    // Delete Node 20 by Node object
+    Node<int>* nodeToDelete = linkedList.begin().current_ptr->m_next;  // Access the node with value 20
+    linkedList.deleteNode(nodeToDelete);
     
-    // // Print the list to verify deletion
-    // cout << "Linked List after deleting 20: ";
-    // linkedList.Print();
+    linkedList.deleteNode(nodeToDelete);
 
-    // // Testing copy constructor
-    // Single_Linked_List<int> copiedList = linkedList;
-    // cout << "Copied list: ";
-    // copiedList.Print();
+    // Print the list to verify deletion
+    cout << "\nLinked List after deleting " << nodeToDelete->m_data << ": ";
+    linkedList.Print();
+
+
+    // Delete Node 30 by value
+    linkedList.deleteNode(30);
+
+    cout << "\nLinked List after deleting 30: ";
+    linkedList.Print();
+
+
+    // Testing copy constructor
+    Single_Linked_List<int> copiedList = linkedList;
+    cout << "\nCopied list: \n";
+
+    copiedList.Print();
 
     // Clean up (optional since we are returning from main, but good practice)
     return 0;

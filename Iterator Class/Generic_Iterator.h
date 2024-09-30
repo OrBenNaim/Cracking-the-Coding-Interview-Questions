@@ -2,26 +2,27 @@
 #define Generic_Iterator_H
 
 #include <iostream>
-
 using namespace std;
 
+/* 
+This is an Abstract Base Class for 'Generic Iterators' -> Therefore won't be able to create an instance of Generic_Iterator object.
+The class contains basic functions that will be passed to derived classes. 
+Other functions, such as 'operator++', will be implemented  in each derived class separately.
+*/
+
+
 template <class T>
-class Generic_Iterator
+class Generic_Iterator      
 {
-    protected:
+    public:
         T* current_ptr;     // Pointer to the current element
 
-
-    public:
         Generic_Iterator(T* ptr=nullptr) : current_ptr(ptr) {}   // Default constructor
 
 
-        virtual ~Generic_Iterator() = 0;  // Pure virtual destructor -> Make this class to abstruct base class
+        virtual ~Generic_Iterator()=0;  // Pure virtual destructor -> Make this class abstruct base class
 
-
-        // Make the increment operator pure virtual to enforce derived classes to implement it
-        virtual Generic_Iterator& operator++()=0;         // Pure virtual function
-        virtual Generic_Iterator operator++(int)=0;      // Pure virtual function for postfix
+        //void GetCurrentPointer
 
 
         // Dereference operator (*) to return the current element:
