@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stdlib.h>
+#include <string>
 #include "../Linked Lists/Linked_List.h"
 #include <unordered_map>
 
@@ -8,10 +8,19 @@ using namespace std;
 /* (2.1) Remove Dups: Write code to remove duplicates from an unsorted linked list.
 FOLLOW UP
 How would you solve this problem if a temporary buffer is not allowed? */ 
-void removeDupsWithBuffer(Single_Linked_List<int>& L);	// Using temporary buffer
-//void removeDupsWithoutBuffer(Single_Linked_List<int>& L);	// Without using temporary buffer
+template <class T>
+void removeDupsWithBuffer(Node<T>* head);	// Using temporary buffer
+
+template <class T>
+void removeDupsWithoutBuffer(Node<T>* head);	// Without using temporary buffer
+
 void test_removeDups();
 
+
+/* (2.2) Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list. */
+template <class T>
+T& find_Kth_element();
+void test_find_Kth_element();
 
 int main()
 {
@@ -19,7 +28,7 @@ int main()
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_removeDups};
+	void (*funcList[])() = {test_removeDups, test_find_Kth_elemen};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -35,45 +44,108 @@ void test_removeDups()
 {
     cout << "\nOutput of Question 2.1:" << endl;
 	
-	int arr[] = {10, 20, 20, 3, 3, 4};
-	size_t arr_len = sizeof(arr)/sizeof(arr[0]);
+	string arr1[] = {"Or", "Avi", "Or", "Dor", "Dor", "bar"};
+	size_t arr1_len = sizeof(arr1)/sizeof(arr1[0]);
+	Single_Linked_List<string> L1(arr1, arr1_len);
 
-	Single_Linked_List<int> L1(arr, arr_len);
+	int arr2[] = {10, 20, 30, 20, 30, 40};
+	size_t arr2_len = sizeof(arr2)/sizeof(arr2[0]);
+	Single_Linked_List<int> L2(arr2, arr2_len);
 
-	cout << "\nThe Linked List before removing duplicates: ";
-	L1.Print();
-
-	removeDupsWithBuffer(L1);
-	cout << "\nThe Linked List after removing duplicates: ";
-	L1.Print();
+	for(int i = 0; i < 2; i++)
+	{
+		if (i == 0)
+		{
+			cout << "\nLinked List 1 before removing duplicates: ";
+			L1.Print();
+			removeDupsWithBuffer(L1.GetHead());
+			cout << "\nLinked List 1 after removing duplicates with buffer: ";
+			L1.Print();
+			cout << "\n" << endl;
+		}
+		else
+		{
+			cout << "\nLinked List 2 before removing duplicates: ";
+			L2.Print();
+			removeDupsWithoutBuffer(L2.GetHead());
+			cout << "\nLinked List 2 after removing duplicates without buffer: ";
+			L2.Print();
+		}
+	}
+	
 }
 
 
-void removeDupsWithBuffer(Single_Linked_List<int> &L)	// Using temporary buffer
+void test_find_Kth_element()
 {
-	Single_Linked_List<int>::Iterator it = L.begin();
-	
-	if (it.current_ptr == nullptr) return;	// Return if linked list is empty
 
-	unordered_map<int, int> hashTable;
+}
 
-	
-	for (it = L.begin(); it != L.end(); ++it)
+template <class T>
+void removeDupsWithBuffer(Node<T>* head)	// Using temporary buffer
+{
+	if (head == nullptr) return;	// Return if linked list is empty
+
+	Node<T>* current = head;
+	Node<T>* prev = nullptr;
+
+	unordered_map<T, bool> hashTable;
+
+	while (current != nullptr)
 	{
-		// If value already exist -> delete it
-		if (hashTable.find(it->m_data) != hashTable.end())	
+		if (hashTable.find(current->m_data) != hashTable.end())	// If Data already exist in hashTable
 		{
-			L.deleteNode(it.current_ptr);
-			//L.deleteNode(it->m_data);	// Delete node by its value
+			prev->m_next = current->m_next;		// Skip the duplicate node
+			delete current;						// Free the memory of the duplicate node
+			current = prev->m_next;				// Move to the next node
 		}
 		else	// Add to the hashTable
 		{
-			hashTable[it->m_data] = 1;
+			hashTable[current->m_data] = true;
+			prev = current;
+			current = current->m_next;
 		}
 	}
 }
 
-// void removeDupsWithoutBuffer(Single_Linked_List<int> &L)	// Without using temporary buffer
-// {
-	
-// }
+
+template <class T>
+void removeDupsWithoutBuffer(Node<T>* head)	// Without using temporary buffer
+{
+	if (head == nullptr) return;	// Return if linked list is empty
+
+	Node<T>* current = head;
+	Node<T>* prev = nullptr;
+	Node<T>* runner = current->m_next;
+
+	while (current != nullptr)
+	{
+		prev = current;				// Set 'prev' to current node
+		runner = current->m_next;	// Set 'runner' to the node after current
+
+		while (runner != nullptr)
+		{
+			if (runner->m_data == current->m_data)	// Duplicate found
+			{
+				prev->m_next = runner->m_next;	// Skip the duplicate node
+				delete runner;					// Free the memory of the duplicate node
+				runner = prev->m_next;			// Move to the next node
+			}
+			else
+			{
+				prev = runner;		// Move to the next node
+				runner = runner->m_next;	// Move to the next node
+			}
+		}
+		current = current->m_next;			// Move to the next node
+	}
+}
+
+
+
+
+template <class T>
+T &find_Kth_element()
+{
+    // TODO: insert return statement here
+}

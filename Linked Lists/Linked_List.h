@@ -87,6 +87,11 @@ class Single_Linked_List
             }
         }
 
+        Node<T>* GetHead() {return m_head;}
+        
+
+        size_t GetSize() {return m_size;}
+
 
         void InsertAtHead(T data)
         {
@@ -174,7 +179,7 @@ class Single_Linked_List
         }
 
 
-        void deleteNode(T val)      // Delete the first node with the given value
+        void deleteNode(const T& val)      // Delete the first node with the given value
         {
             if (m_head == nullptr) return;  // Linked List is empty
 
