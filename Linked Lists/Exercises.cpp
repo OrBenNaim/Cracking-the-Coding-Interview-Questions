@@ -19,7 +19,7 @@ void test_removeDups();
 
 /* (2.2) Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list. */
 template <class T>
-T& find_Kth_element();
+Node<T>* find_Kth_element(Node<T>* head, unsigned int k);
 void test_find_Kth_element();
 
 int main()
@@ -28,7 +28,7 @@ int main()
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_removeDups, test_find_Kth_elemen};
+	void (*funcList[])() = {test_removeDups, test_find_Kth_element};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -45,18 +45,18 @@ void test_removeDups()
     cout << "\nOutput of Question 2.1:" << endl;
 	
 	string arr1[] = {"Or", "Avi", "Or", "Dor", "Dor", "bar"};
-	size_t arr1_len = sizeof(arr1)/sizeof(arr1[0]);
+	unsigned int arr1_len = sizeof(arr1)/sizeof(arr1[0]);
 	Single_Linked_List<string> L1(arr1, arr1_len);
 
 	int arr2[] = {10, 20, 30, 20, 30, 40};
-	size_t arr2_len = sizeof(arr2)/sizeof(arr2[0]);
+	unsigned int arr2_len = sizeof(arr2)/sizeof(arr2[0]);
 	Single_Linked_List<int> L2(arr2, arr2_len);
 
 	for(int i = 0; i < 2; i++)
 	{
 		if (i == 0)
 		{
-			cout << "\nLinked List 1 before removing duplicates: ";
+			cout << "Linked List 1 before removing duplicates: ";
 			L1.Print();
 			removeDupsWithBuffer(L1.GetHead());
 			cout << "\nLinked List 1 after removing duplicates with buffer: ";
@@ -75,11 +75,6 @@ void test_removeDups()
 	
 }
 
-
-void test_find_Kth_element()
-{
-
-}
 
 template <class T>
 void removeDupsWithBuffer(Node<T>* head)	// Using temporary buffer
@@ -142,10 +137,50 @@ void removeDupsWithoutBuffer(Node<T>* head)	// Without using temporary buffer
 }
 
 
+void test_find_Kth_element()
+{
+	cout << "\nOutput of Question 2.2:" << endl;
+	
+	Single_Linked_List<int> L;
 
+	for (int i = 0; i < 7; i++)
+	{
+		L.InsertAtEnd(i+1);
+	}
+	cout << "The Linked List is: ";
+	L.Print();
+
+	Node<int>* node = find_Kth_element(L.GetHead(), 5);
+
+	if (node != nullptr)
+	{
+		cout << "\nThe " << 5 << "th to last element is: " << node->m_data << endl;
+	}
+	else
+	{
+		cout << "\nThe " << 5 << "th to last element not exist" << endl;
+	}
+}
 
 template <class T>
-T &find_Kth_element()
+Node<T>* find_Kth_element(Node<T>* head, unsigned int k)
 {
-    // TODO: insert return statement here
+    if (head == nullptr) return nullptr;	// Linked List is empty
+
+	Node<T>* n1 = head;
+	Node<T>* n2 = head;
+
+	// Move n2 to the Kth node from head or (size - k) from last:
+	for (unsigned int i = 0; i <= k; i++)
+	{
+		if (n2 == nullptr) return n2;	// Out of bounds
+		n2 = n2->m_next;
+	}
+
+	while (n2 != nullptr)
+	{
+		n1 = n1->m_next;
+		n2 = n2->m_next;
+	}
+	return n1;
 }
