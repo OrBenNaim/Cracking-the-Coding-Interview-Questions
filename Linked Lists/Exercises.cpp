@@ -33,6 +33,19 @@ void DeleteMiddle(Node<T>* node);
 void test_DeleteMiddle();
 
 
+/* (2.4)  Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
+before all nodes greater than or equal to x. If x is contained within the list, the values of x only need
+to be after the elements less than x (see below). The partition element x can appear anywhere in the
+"right partition"; it does not need to appear between the left and right partitions. EXAMPLE:
+Input:
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition= 5]
+Output:
+3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8  */
+template <class T>
+Node<T>* partition(Node<T>* originalHead, int x);
+void test_partition();
+
+
 
 int main()
 {
@@ -40,7 +53,7 @@ int main()
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle};
+	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle, test_partition};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -221,6 +234,7 @@ void test_DeleteMiddle()
 }
 
 
+
 template <class T>
 void DeleteMiddle(Node<T> *node)
 {
@@ -228,7 +242,61 @@ void DeleteMiddle(Node<T> *node)
 
 	node->m_data = (node->m_next)->m_data;
 	node->m_next = (node->m_next)->m_next;
-	//delete node->m_next;	// Free the memory
+	delete node->m_next;	// Free the memory
 }
 
 
+
+void test_partition()
+{
+	cout << "Output of Question 2.4:" << endl;
+
+	int arr[] = {3, 5, 8, 5, 10, 2, 1};
+	unsigned int arr_len = sizeof(arr)/sizeof(arr[0]);
+	Single_Linked_List<int> L(arr, arr_len);
+	cout << "The original Linked List is: ";
+
+	L.Print();
+
+	Node<int>* newHead = partition(L.GetHead(), 5);
+
+	cout << "The Linked List after partition is: ";
+	
+	while (newHead != nullptr)
+	{
+		cout << newHead->m_data << "-> ";
+		newHead = newHead->m_next;
+	}
+	cout << "nullptr";
+}
+
+
+template <class T>
+Node<T>* partition(Node<T>* originalHead, int x)
+{
+	if (originalHead == nullptr || originalHead->m_next == nullptr) return originalHead;
+
+	Node<T>* newHead = originalHead;
+	Node<T>* newTail = originalHead;
+	Node<T>* next = nullptr;
+
+	while (originalHead != nullptr)
+	{
+		next = originalHead->m_next;	// Save the next node in the original Linked List
+
+		if (originalHead->m_data < x)	// Insert at Head
+		{
+			originalHead->m_next = newHead;
+			newHead = originalHead;
+		}
+		else	// Insert at Tail
+		{
+			newTail->m_next = originalHead;
+			newTail = originalHead;
+		}
+		originalHead = next;	// Move to the next node in the original linked list
+	}
+
+	newTail->m_next = nullptr;
+	return newHead;
+}
