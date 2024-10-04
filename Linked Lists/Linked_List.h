@@ -40,7 +40,7 @@ class Single_Linked_List
 
         Node<T>* m_tail;    // The end of the Linked List
 
-        size_t m_size;      // Count how many items exist
+        unsigned int m_size;      // Count how many items exist
 
     public:
         Single_Linked_List() : m_head(nullptr), m_tail(nullptr), m_size(0) {}   // Default constructor
@@ -87,10 +87,25 @@ class Single_Linked_List
             }
         }
 
-        Node<T>* GetHead() {return m_head;}
+        Node<T>* GetHead() const {return m_head;}
         
 
-        size_t GetSize() {return m_size;}
+        unsigned int GetSize() const {return m_size;} 
+
+
+        Node<T>* GetNode(const T& val) const // Return the first node occurrence with the same value or nullptr if the value does not exits
+        {
+            Node <T>* current = m_head;
+            while (current != nullptr)
+            {
+                if (current->m_data == val)
+                {
+                    return current;
+                }
+                current = current->m_next;
+            }
+            return nullptr;
+        }
 
 
         void InsertAtHead(T data)

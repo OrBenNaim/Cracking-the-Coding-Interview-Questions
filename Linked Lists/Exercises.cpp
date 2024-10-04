@@ -22,13 +22,25 @@ template <class T>
 Node<T>* find_Kth_element(Node<T>* head, unsigned int k);
 void test_find_Kth_element();
 
+
+/* (2.3) Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
+the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
+that node. EXAMPLE:
+lnput:the node c from the linked lista->b->c->d->e->f
+Result: nothing is returned, but the new linked list looks like a->b->d->e->f */
+template <class T>
+void DeleteMiddle(Node<T>* node);
+void test_DeleteMiddle();
+
+
+
 int main()
 {
     // When you declare a function pointer in C++, you can use the following syntax: void (*funcPtr)();
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_removeDups, test_find_Kth_element};
+	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -65,7 +77,7 @@ void test_removeDups()
 		}
 		else
 		{
-			cout << "\nLinked List 2 before removing duplicates: ";
+			cout << "Linked List 2 before removing duplicates: ";
 			L2.Print();
 			removeDupsWithoutBuffer(L2.GetHead());
 			cout << "\nLinked List 2 after removing duplicates without buffer: ";
@@ -139,7 +151,7 @@ void removeDupsWithoutBuffer(Node<T>* head)	// Without using temporary buffer
 
 void test_find_Kth_element()
 {
-	cout << "\nOutput of Question 2.2:" << endl;
+	cout << "Output of Question 2.2:" << endl;
 	
 	Single_Linked_List<int> L;
 
@@ -161,6 +173,8 @@ void test_find_Kth_element()
 		cout << "\nThe " << 5 << "th to last element not exist" << endl;
 	}
 }
+
+
 
 template <class T>
 Node<T>* find_Kth_element(Node<T>* head, unsigned int k)
@@ -184,3 +198,37 @@ Node<T>* find_Kth_element(Node<T>* head, unsigned int k)
 	}
 	return n1;
 }
+
+
+
+void test_DeleteMiddle()
+{
+	cout << "Output of Question 2.3:" << endl;
+
+	char arr[] = {'a', 'b', 'c', 'd', 'e', 'f'};
+	unsigned int arr_len = sizeof(arr)/sizeof(arr[0]);
+	Single_Linked_List<char> L(arr, arr_len);
+	cout << "The original Linked List is: ";
+
+	L.Print();
+
+	Node<char>* node_to_be_deleted = L.GetNode('c');
+
+	DeleteMiddle(node_to_be_deleted);
+	
+	cout << "\nThe Linked List after deletion of 'c'" << " is: ";
+	L.Print();
+}
+
+
+template <class T>
+void DeleteMiddle(Node<T> *node)
+{
+	if (node == nullptr || node->m_next == nullptr) return;
+
+	node->m_data = (node->m_next)->m_data;
+	node->m_next = (node->m_next)->m_next;
+	//delete node->m_next;	// Free the memory
+}
+
+
