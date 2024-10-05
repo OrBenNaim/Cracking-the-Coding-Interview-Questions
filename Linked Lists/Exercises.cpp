@@ -61,6 +61,11 @@ Node<int>* sumList(Node<int>* curr1, Node<int>* curr2, int carry=0);
 void test_sumList();
 
 
+/* (2.6) Palindrome: Implement a function to check if a linked list is a palindrome */
+template <class T>
+bool isPalindrome(Node<T>* head);
+void test_isPalindrome();
+
 
 int main()
 {
@@ -69,7 +74,7 @@ int main()
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle, test_partition,
-							test_sumList};
+							test_sumList, test_isPalindrome};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -319,6 +324,7 @@ Node<T>* partition(Node<T>* originalHead, int x)
 }
 
 
+
 void test_sumList()
 {
     cout << "\nOutput of Question 2.5:" << endl;
@@ -396,3 +402,89 @@ Node<int>* sumList(Node<int>* curr1, Node<int>* curr2, int carry)
 }
 
 
+void test_isPalindrome()
+{
+	cout << "\nOutput of Question 2.6:" << endl;
+
+	char arr1[] = {'a', 'b', 'c', 'b', 'a'};
+    unsigned int arr1_len = sizeof(arr1)/sizeof(arr1[0]);
+    Single_Linked_List<char> L1(arr1, arr1_len);
+
+    char arr2[] = {'a', 'b', 'c'};
+    unsigned int arr2_len = sizeof(arr2)/sizeof(arr2[0]);
+    Single_Linked_List<char> L2(arr2, arr2_len);
+
+	for(int i = 0; i < 2; i++)
+	{
+		if (i == 0)
+		{
+			cout << "Is L1 Linked List palindrome?" << endl;
+    		L1.Print();
+			if (isPalindrome(L1.GetHead()))
+			{
+				cout << "True\n" << endl;
+			}
+			else
+			{
+				cout << "False\n" << endl;
+			}
+		}
+		else
+		{
+			cout << "Is L2 Linked List palindrome?" << endl;
+    		L2.Print();
+			
+			if (isPalindrome(L1.GetHead()))
+			{
+				cout << "True\n" << endl;
+			}
+			else
+			{
+				cout << "False\n" << endl;
+			}
+		}
+	}
+}
+
+
+template <class T>
+bool isPalindrome(Node<T>* head)
+{
+    if (head == nullptr || head->m_next == nullptr) return true;
+	
+	// Part 1: Find the middle node
+	Node<T>* slow = head; 
+	Node<T>* fast = head;
+
+	while (fast != nullptr && fast->m_next != nullptr)	// Move slow by 1 step and fast by 2, so slow reaches the middle
+	{
+		slow = slow->m_next;
+		fast = (fast->m_next)->m_next;
+	}
+
+	// Part 2: Reverse the second half of the linked list
+	Node<T>* prev = nullptr;
+	Node<T>* curr = slow; 
+	Node<T>* next = nullptr;
+
+	while (curr != nullptr)
+	{
+		next = curr->m_next;	
+		curr->m_next = prev;
+		prev = curr;
+		curr = next;
+	}
+
+	// Step 3: Compare the first half with the reverse second half
+	Node<T>* firstHalf = head;
+	Node<T>* secondHalf = prev;
+
+	while (firstHalf != slow)	// slow is the middle node
+	{
+		if (firstHalf->m_data != secondHalf->m_data) return false;
+
+		firstHalf = firstHalf->m_next;
+		secondHalf = secondHalf->m_next;
+	}
+	return true;
+}
