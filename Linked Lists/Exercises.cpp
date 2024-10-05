@@ -33,7 +33,7 @@ void DeleteMiddle(Node<T>* node);
 void test_DeleteMiddle();
 
 
-/* (2.4)  Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
+/* (2.4) Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
 before all nodes greater than or equal to x. If x is contained within the list, the values of x only need
 to be after the elements less than x (see below). The partition element x can appear anywhere in the
 "right partition"; it does not need to appear between the left and right partitions. EXAMPLE:
@@ -46,6 +46,21 @@ Node<T>* partition(Node<T>* originalHead, int x);
 void test_partition();
 
 
+/* (2.5) Sum Lists: You have two numbers represented by a linked list, where each node contains a single
+digit. The digits are stored in reverse order, such that the 1 's digit is at the head of the list. Write a
+function that adds the two numbers and returns the sum as a linked list. EXAMPLE:
+Input: (7-> 1 -> 6) + (5 -> 9 -> 2).That is,617 + 295.
+Output: 2 -> 1 -> 9. That is, 912.
+FOLLOW UP
+Suppose the digits are stored in forward order. Repeat the above problem.
+EXAMPLE
+lnput:(6 -> 1 -> 7) + (2 -> 9 -> 5).That is,617 + 295.
+Output: 9 -> 1 -> 2. That is, 912.
+*/
+Node<int>* sumList(Node<int>* curr1, Node<int>* curr2, int carry=0);
+void test_sumList();
+
+
 
 int main()
 {
@@ -53,7 +68,8 @@ int main()
 	// void is what the functions returns in this case, () is the functions parameters which is empty in this case.
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
-	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle, test_partition};
+	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle, test_partition,
+							test_sumList};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -242,7 +258,7 @@ void DeleteMiddle(Node<T> *node)
 
 	node->m_data = (node->m_next)->m_data;
 	node->m_next = (node->m_next)->m_next;
-	delete node->m_next;	// Free the memory
+	//delete node->m_next;	// Free the memory
 }
 
 
@@ -269,6 +285,7 @@ void test_partition()
 	}
 	cout << "nullptr";
 }
+
 
 
 template <class T>
@@ -300,3 +317,82 @@ Node<T>* partition(Node<T>* originalHead, int x)
 	newTail->m_next = nullptr;
 	return newHead;
 }
+
+
+void test_sumList()
+{
+    cout << "\nOutput of Question 2.5:" << endl;
+
+    int arr1[] = {7, 1, 6};
+    unsigned int arr1_len = sizeof(arr1)/sizeof(arr1[0]);
+    Single_Linked_List<int> L1(arr1, arr1_len);
+
+    cout << "L1 Linked List is: ";
+    L1.Print();
+
+    int arr2[] = {5, 9, 2};
+    unsigned int arr2_len = sizeof(arr2)/sizeof(arr2[0]);
+    Single_Linked_List<int> L2(arr2, arr2_len);
+
+    cout << "L2 Linked List is: ";
+    L2.Print();
+
+    Node<int>* newHead = sumList(L1.GetHead(), L2.GetHead());
+
+    cout << "\nThe sum List is: ";
+    
+    // Store the head of the sum list in a separate pointer for deletion later
+    Node<int>* tempHead = newHead;
+    
+    while(newHead != nullptr)
+    {
+        cout << newHead->m_data << " -> ";	// Read output from tail to head (reverase direction)
+        newHead = newHead->m_next;
+    }
+
+    cout << "nullptr" << endl;
+
+    // Reset newHead to tempHead for deletion
+    newHead = tempHead;
+    
+    // Free the sumList memory after use:
+    while (newHead != nullptr) 
+    {
+        Node<int>* temp = newHead;
+        newHead = newHead->m_next;
+        delete temp;  // Free each node
+    }
+}
+
+
+Node<int>* sumList(Node<int>* curr1, Node<int>* curr2, int carry)
+{
+    if (curr1 == nullptr && curr2 == nullptr && carry == 0) return nullptr;
+
+	Node<int>* result = new Node<int>();	// Allocate memory for the new node
+	result->m_data = carry;
+	result->m_next = nullptr;
+
+	if (curr1 != nullptr)
+	{
+		result->m_data += curr1->m_data;
+	}
+
+	if (curr2 != nullptr)
+	{
+		result->m_data += curr2->m_data;
+	}
+	
+	carry = result->m_data / 10;
+
+	result->m_data = (result->m_data) % 10;
+
+	if (curr1->m_next != nullptr || curr2->m_next != nullptr)
+	{
+		result->m_next = sumList(curr1->m_next, curr2->m_next, carry);	// Recursive call
+	}
+
+	return result;
+}
+
+
