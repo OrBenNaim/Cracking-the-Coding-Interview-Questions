@@ -1,0 +1,28 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: sudo apt-get install g++ make
+
+    - name: Build the code
+      run: |
+        cd cpp   # Change to your specific directory if needed
+        make     # Assumes you have a Makefile
+
+    - name: Run tests
+      run: |
+        cd cpp   # Change to your specific directory if needed
+        ./your_test_executable  # Replace with your actual test command
