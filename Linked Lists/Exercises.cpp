@@ -67,6 +67,15 @@ bool isPalindrome(Node<T>* head);
 void test_isPalindrome();
 
 
+/* (2.7) Intersection: Given two (singly) linked lists, determine if the two lists intersect. Return the intersecting node. Note that the intersection is defined based on reference, not value. That is, if the kth
+node of the first linked list is the exact same node (by reference) as the jth node of the second
+linked list, then they are intersecting. */
+template <class T>
+Node<T>* Intersection(Node<T>* head1, Node<T>* head2);
+void test_Intersection();
+
+
+
 int main()
 {
     // When you declare a function pointer in C++, you can use the following syntax: void (*funcPtr)();
@@ -74,7 +83,7 @@ int main()
 	// When you want to create an array of such function pointers, you extend the syntax: void (*funcList[])();
 
 	void (*funcList[])() = {test_removeDups, test_find_Kth_element, test_DeleteMiddle, test_partition,
-							test_sumList, test_isPalindrome};
+							test_sumList, test_isPalindrome, test_Intersection};
 
 	for (auto& func : funcList) // auto allows the compiler to automatically deduce the type of func based on the type of elements in funcList.
 	{
@@ -487,4 +496,121 @@ bool isPalindrome(Node<T>* head)
 		secondHalf = secondHalf->m_next;
 	}
 	return true;
+}
+
+
+void test_Intersection()
+{
+	cout << "\nOutput of Question 2.6:" << endl;
+
+	// Create two linked lists that intersect
+    Single_Linked_List<int> L1;
+    Single_Linked_List<int> L2;
+
+    Node<int>* intersection = new Node<int>(100);  // Intersection node
+
+    // Insert elements into L1
+    L1.InsertAtEnd(1);
+    L1.InsertAtEnd(2);
+    L1.InsertAtEnd(3);
+    L1.GetTail()->m_next = intersection;  // Create intersection
+    L1.InsertAtEnd(101);
+    L1.InsertAtEnd(102);
+
+    // Insert elements into L2
+    L2.InsertAtEnd(9);
+    L2.InsertAtEnd(10);
+    L2.GetTail()->m_next = intersection;  // Create intersection
+    L2.InsertAtEnd(103);
+
+    // Print both lists
+    cout << "List 1: ";
+    L1.Print();
+    cout << "List 2: ";
+    L2.Print();
+
+    // Find intersection
+    Node<int>* intersectNode = findIntersection(L1.GetHead(), L2.GetHead());
+
+    // Display the result
+    if (intersectNode != nullptr) 
+	{
+        cout << "\nIntersection found at node with value: " << intersectNode->m_data << "\n";
+    } 
+	else 
+	{
+        cout << "\nNo intersection found.\n";
+    }
+}
+
+
+template <class T>
+Node<T>* Intersection(Node<T>* head1, Node<T>* head2)
+{
+	if (head1 == nullptr || head2 == nullptr) return nullptr;
+
+	// Part1: Find the last tail of each List and their sizes
+	unsigned int size1 = 0, size2 = 0;
+
+	Node<T>* curr1 = head1;
+	Node<T>* curr2 = head2;
+
+	while (curr1->m_next != nullptr && curr2->m_next != nullptr)	// Find the tail of the shorter list
+	{
+		curr1 = curr1->m_next;
+		curr2 = curr2->m_next;
+
+		size1++;
+		size2++;
+	}
+	
+	if (curr1->m_next == nullptr && curr2->m_next != nullptr)	// List1 is shorter than List2
+	{
+		while (curr2->m_next != nullptr)
+		{
+			curr2 = curr2->m_next;
+			size2 += 1;
+		}
+	}
+	else if (curr1->m_next != nullptr && curr2->m_next == nullptr)	// List2 is shorter than List1
+	{
+		while (curr1->m_next != nullptr)
+		{
+			curr1 = curr1->m_next;
+			size1 += 1;
+		}
+	}
+
+	// Otherwise, Both list have the same size.
+
+	// Part 2: Check the last tail of each List to know if the lists are intersected or not
+	if (curr1 != curr2) return nullptr;
+
+	
+	// Part 3: Move the pointer of the shorter list to head, and the pointer of the longer list to head + (abs(size1-size2)))
+	curr1 = head1;
+	curr2 = head2;
+	
+	if (size1 > size2)
+	{
+		while (size1 - size2 != 0)
+		{
+			curr1 = curr1->m_next;
+		}
+	} 
+	else if (size2 > size1)
+	{
+		while (size2 - size1 != 0)
+		{
+			curr2 = curr2->m_next;
+		}
+	}
+	
+
+	// Part 4: find the first common node
+	while (curr1 != curr2)
+	{
+		
+	}
+
 }
