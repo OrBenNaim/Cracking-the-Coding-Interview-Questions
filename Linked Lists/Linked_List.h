@@ -88,7 +88,20 @@ class Single_Linked_List
         }
 
         Node<T>* GetHead() const {return m_head;}
+
         
+        Node<T>* GetTail() const
+        {
+            if (m_head == nullptr) return nullptr;
+            
+            Node<T>* curr = m_head;
+
+            while (curr->m_next != nullptr)
+            {
+                curr = curr->m_next;
+            }
+            return curr;
+        }
 
         unsigned int GetSize() const {return m_size;} 
 

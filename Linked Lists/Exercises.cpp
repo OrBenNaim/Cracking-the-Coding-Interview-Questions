@@ -449,7 +449,7 @@ void test_isPalindrome()
 			}
 			else
 			{
-				cout << "False\n" << endl;
+				cout << "False" << endl;
 			}
 		}
 	}
@@ -501,36 +501,51 @@ bool isPalindrome(Node<T>* head)
 
 void test_Intersection()
 {
-	cout << "\nOutput of Question 2.6:" << endl;
+	cout << "\nOutput of Question 2.7:" << endl;
 
-	// Create two linked lists that intersect
-    Single_Linked_List<int> L1;
-    Single_Linked_List<int> L2;
+    Node<int>* n1 = new Node<int>(1); 
+	Node<int>* n2 = new Node<int>(2); 
+	n1->m_next = n2;
 
-    Node<int>* intersection = new Node<int>(100);  // Intersection node
+	Node<int>* n3 = new Node<int>(3); 
+	Node<int>* n4 = new Node<int>(4);
+	Node<int>* n5 = new Node<int>(5);
+	n3->m_next = n4;
+	n4->m_next = n5;
 
-    // Insert elements into L1
-    L1.InsertAtEnd(1);
-    L1.InsertAtEnd(2);
-    L1.InsertAtEnd(3);
-    L1.GetTail()->m_next = intersection;  // Create intersection
-    L1.InsertAtEnd(101);
-    L1.InsertAtEnd(102);
+	Node<int>* intersectionNode = new Node<int>(100); 
+	n2->m_next = intersectionNode;
+	n5->m_next = intersectionNode;
+	
+	Node<int>* n6 = new Node<int>(6);
+	Node<int>* n7 = new Node<int>(7);
 
-    // Insert elements into L2
-    L2.InsertAtEnd(9);
-    L2.InsertAtEnd(10);
-    L2.GetTail()->m_next = intersection;  // Create intersection
-    L2.InsertAtEnd(103);
+	intersectionNode->m_next = n6;
+	n6->m_next = n7;
 
-    // Print both lists
+    // Print both lists:
     cout << "List 1: ";
-    L1.Print();
-    cout << "List 2: ";
-    L2.Print();
+
+	Node<int>* curr1 = n1;
+	Node<int>* curr2 = n3;
+
+	while (curr1 != nullptr)
+	{
+		cout << curr1->m_data << " -> ";
+		curr1 = curr1->m_next;
+	}
+	cout << "nullptr";
+
+    cout << "\nList 2: ";
+    while (curr2 != nullptr)
+	{
+		cout << curr2->m_data << " -> ";
+		curr2 = curr2->m_next;
+	}
+	cout << "nullptr\n";
 
     // Find intersection
-    Node<int>* intersectNode = findIntersection(L1.GetHead(), L2.GetHead());
+    Node<int>* intersectNode = Intersection(n1, n3);
 
     // Display the result
     if (intersectNode != nullptr) 
@@ -550,57 +565,41 @@ Node<T>* Intersection(Node<T>* head1, Node<T>* head2)
 	if (head1 == nullptr || head2 == nullptr) return nullptr;
 
 	// Part1: Find the last tail of each List and their sizes
-	unsigned int size1 = 0, size2 = 0;
+	unsigned int size1 = 1, size2 = 1;
 
 	Node<T>* curr1 = head1;
 	Node<T>* curr2 = head2;
 
-	while (curr1->m_next != nullptr && curr2->m_next != nullptr)	// Find the tail of the shorter list
-	{
-		curr1 = curr1->m_next;
-		curr2 = curr2->m_next;
+	while (curr1->m_next != nullptr) {
+        curr1 = curr1->m_next;
+        size1++;
+    }
 
-		size1++;
-		size2++;
-	}
+    while (curr2->m_next != nullptr) {
+        curr2 = curr2->m_next;
+        size2++;
+    }
 	
-	if (curr1->m_next == nullptr && curr2->m_next != nullptr)	// List1 is shorter than List2
-	{
-		while (curr2->m_next != nullptr)
-		{
-			curr2 = curr2->m_next;
-			size2 += 1;
-		}
-	}
-	else if (curr1->m_next != nullptr && curr2->m_next == nullptr)	// List2 is shorter than List1
-	{
-		while (curr1->m_next != nullptr)
-		{
-			curr1 = curr1->m_next;
-			size1 += 1;
-		}
-	}
-
 	// Otherwise, Both list have the same size.
 
 	// Part 2: Check the last tail of each List to know if the lists are intersected or not
 	if (curr1 != curr2) return nullptr;
 
 	
-	// Part 3: Move the pointer of the shorter list to head, and the pointer of the longer list to head + (abs(size1-size2)))
+	// Part 3: Move the pointer of the shorter list to his head, and the pointer of the longer list to his head + (abs(size1-size2)))
 	curr1 = head1;
 	curr2 = head2;
 	
 	if (size1 > size2)
 	{
-		while (size1 - size2 != 0)
+		for (unsigned int i = 0; i < size1 - size2; i++)
 		{
 			curr1 = curr1->m_next;
 		}
 	} 
 	else if (size2 > size1)
 	{
-		while (size2 - size1 != 0)
+		for (unsigned int i = 0; i < size2 - size1; i++)
 		{
 			curr2 = curr2->m_next;
 		}
@@ -610,7 +609,9 @@ Node<T>* Intersection(Node<T>* head1, Node<T>* head2)
 	// Part 4: find the first common node
 	while (curr1 != curr2)
 	{
-		
+		curr1 = curr1->m_next;
+		curr2 = curr2->m_next;
 	}
 
+	return curr1;
 }
