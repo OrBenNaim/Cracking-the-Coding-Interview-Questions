@@ -1,5 +1,4 @@
 #include "tests.h"
-#include "functions_signature.h"
 
 int main()
 {
@@ -7,7 +6,7 @@ int main()
 
     test_find_Kth_element();    // Test problem 2.2
 
-    test_DeleteMiddle();        // Test problem 2.3
+    test_deleteMiddle();        // Test problem 2.3
 
     test_partition();           // Test problem 2.4
 
@@ -15,7 +14,7 @@ int main()
 
     test_isPalindrome();        // Test problem 2.6
 
-    test_Intersection();        // Test problem 2.7
+    test_intersection();        // Test problem 2.7
     
     return 0;
 }

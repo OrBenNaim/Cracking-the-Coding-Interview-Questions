@@ -1,9 +1,8 @@
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 #include <iostream>
-#include "../Iterator Class/Generic_Iterator.h"
-
+ 
 using namespace std;
 
 
@@ -29,7 +28,6 @@ struct Node
         return is;
     }
 };
-
 
 
 template <class T>
@@ -158,100 +156,6 @@ class Single_Linked_List
             m_size++;
         }
 
-
-        void deleteNode(Node<T>* node)
-        {
-            if (m_head == nullptr || node == nullptr) return;   // Linked List is empty or invalid node
-
-            // If the node to be deleted is the head:
-            if (m_head == node) 
-            {
-                m_size--;
-                
-                Node<T>* temp = m_head;      // Store current head
-
-                m_head = m_head->m_next;     // Move the head to the next node
-
-                delete temp;                 // Delete the old head
-
-                // If the list is now empty, update the tail
-                if (m_head == nullptr) 
-                {
-                    m_tail = nullptr;
-                }
-                return;
-            }
-
-            Iterator it = this->begin();
-            Iterator prev = it;     // Iterator to keep track of the previous node
-
-            while (it != this->end() && it->m_next != node)
-            {
-                prev = it;      // Store the previous iterator
-                ++it;           // Move to the next node
-            }
-            
-            // If we have found the node:
-            if (it != this->end())
-            {
-                prev->m_next = node->m_next;  // Bypass the node to be deleted
-
-                if (node == m_tail)           // If node is the tail, update m_tail
-                {
-                    m_tail = prev.current_ptr;  // Update the tail
-                }
-
-                delete node;    // Free memory
-                m_size--;
-            }
-        }
-
-
-        void deleteNode(const T& val)      // Delete the first node with the given value
-        {
-            if (m_head == nullptr) return;  // Linked List is empty
-
-            else if (m_head->m_data == val)     // If the head node is the one to be deleted
-            {
-                m_size--;
-                
-                Node<T>* temp = m_head;
-
-                m_head = m_head->m_next;
-
-                delete temp;
-
-                // If the list is now empty, update the tail:
-                if (m_head == nullptr)
-                {
-                    m_tail = nullptr;
-                }
-
-                return;
-            }
-            
-            Iterator it = this->begin();
-            Iterator prev = it;
-
-            while (it != this->end() && it->m_next->m_data != val)
-            {
-                prev = it;      // Store the previous iterator
-                ++it;           // Move to the next node
-            }
-
-            // If we have found the node:
-            if (it != this->end())
-            {
-                prev->m_next = it->m_next->m_next;  // Bypass the node to be deleted
-
-                if (it->m_next == nullptr)  // If the node to be deleted is tail
-                {
-                    m_tail = prev.current_ptr;  // Update the tail
-                }
-                m_size--;
-            }
-        }
-
         
         void Print() const
         {
@@ -263,47 +167,6 @@ class Single_Linked_List
             }
             cout << "nullptr" << endl; // Indicate the end of the linked list
         }
-
-
-        class Iterator : public Generic_Iterator<Node<T>>
-        {
-            public:
-                
-                Iterator(Node<T>* ptr=nullptr) : Generic_Iterator<Node<T>>(ptr) {}
-                
-                // Prefix increment operator (++current_ptr) to move the iterator to the next element:
-                Iterator& operator++() 
-                {
-                   if (this->current_ptr) 
-                    {
-                        this->current_ptr = this->current_ptr->m_next; // Move to next node
-                    }
-                    return *this;
-                }
-
-                
-                /*The language design convention is to use int as the dummy argument. 
-                It has no functional meaning in the post-increment operator itself, but using int follows the standard C++ convention,
-                ensuring consistency across all custom iterator implementations.
-                */
-                Iterator operator++(int)      // Postfix increment operator (current_ptr++) to move the iterator to the next element:   
-                {
-                    Iterator temp = *this;
-                    ++(*this);
-                    return temp;
-                }
-
-
-                Node<T>* operator->() const
-                {
-                    return this->current_ptr;   // Allow access to node's members (like m_next)
-                }
-        };
-
-        Iterator begin() const {return Iterator(m_head);}   // Iterator to the beginning of the Linked List
-
-
-        Iterator end() const {return Iterator(nullptr);}
 };
 
-#endif // LINKEDLIST_H
+#endif // !LINKED_LIST_H

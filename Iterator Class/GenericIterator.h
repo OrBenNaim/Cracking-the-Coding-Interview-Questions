@@ -1,7 +1,8 @@
-#ifndef Generic_Iterator_H
-#define Generic_Iterator_H
+#ifndef GENERICITERATOR_H
+#define GENERICITERATOR_H
 
 #include <iostream>
+
 using namespace std;
 
 /* 
@@ -12,15 +13,15 @@ Other functions, such as 'operator++', will be implemented  in each derived clas
 
 
 template <class T>
-class Generic_Iterator      
+class GenericIterator      
 {
     public:
         T* current_ptr;     // Pointer to the current element
 
-        Generic_Iterator(T* ptr=nullptr) : current_ptr(ptr) {}   // Default constructor
+        GenericIterator(T* ptr=nullptr) : current_ptr(ptr) {}   // Default constructor
 
 
-        virtual ~Generic_Iterator()=0;  // Pure virtual destructor -> Make this class abstruct base class
+        virtual ~GenericIterator()=0;  // Pure virtual destructor -> Make this class abstruct base class
 
         //void GetCurrentPointer
 
@@ -30,7 +31,7 @@ class Generic_Iterator
 
 
         // Equality operator to compare two Generic_Iterators
-        bool operator==(const Generic_Iterator<T>& other_Generic_Iterator) const
+        bool operator==(const GenericIterator <T>& other_Generic_Iterator) const
         {
             return current_ptr == other_Generic_Iterator.current_ptr;   
         }
@@ -43,11 +44,11 @@ class Generic_Iterator
         }
 
 
-        friend ostream& operator<<(ostream& os, const Generic_Iterator<T>& Generic_Iterator)
+        friend ostream& operator<<(ostream& os, const GenericIterator <T>& Generic_Iterator)
         {
             if (Generic_Iterator.current_ptr) 
             {
-                os << Generic_Iterator.current_ptr; // Print the current element
+                os << GenericIterator.current_ptr; // Print the current element
             } 
             else 
             {
@@ -56,11 +57,11 @@ class Generic_Iterator
             return os;
         }
 
-        friend istream& operator>>(istream& is, Generic_Iterator<T>& Generic_Iterator)
+        friend istream& operator>>(istream& is, GenericIterator <T>& GenericIterator)
         {
-            if (Generic_Iterator.current_ptr) 
+            if (GenericIterator.current_ptr)
             {
-                is >> *Generic_Iterator.current_ptr; // Input into the current element
+                is >> *GenericIterator.current_ptr; // Input into the current element
             }
             return is;
         }
@@ -69,6 +70,6 @@ class Generic_Iterator
 
 // Provide an empty definition for the pure virtual destructor outside the class
 template <class T>
-Generic_Iterator<T>::~Generic_Iterator() {}
+GenericIterator <T>::~GenericIterator() {}
 
-#endif  // Generic_Iterator_H
+#endif  // !GENERICITERATOR_H

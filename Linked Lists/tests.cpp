@@ -2,8 +2,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../Linked Lists/Linked_List.h"
-#include "functions_signature.h"
+#include "functions.h"
 #include "tests.h"
 
 using namespace std;
@@ -75,7 +74,7 @@ void test_find_Kth_element()
 
 
 //-------------------- Test for 2.3 problem --------------------
-void test_DeleteMiddle()
+void test_deleteMiddle()
 {
 	cout << "Output of Question 2.3:" << endl;
 
@@ -88,7 +87,7 @@ void test_DeleteMiddle()
 
 	Node<char>* node_to_be_deleted = L.GetNode('c');
 
-	DeleteMiddle(node_to_be_deleted);
+	deleteMiddle(node_to_be_deleted);
 	
 	cout << "\nThe Linked List after deletion of 'c'" << " is: ";
 	L.Print();
@@ -117,7 +116,7 @@ void test_partition()
 		cout << newHead->m_data << "-> ";
 		newHead = newHead->m_next;
 	}
-	cout << "nullptr";
+	cout << "nullptr" << endl;
 }
 //-------------------------------------------------------------------------
 
@@ -218,7 +217,7 @@ void test_isPalindrome()
 
 
 //-------------------- Test for 2.7 problem --------------------
-void test_Intersection()
+void test_intersection()
 {
 	cout << "\nOutput of Question 2.7:" << endl;
 
@@ -264,7 +263,7 @@ void test_Intersection()
 	cout << "nullptr\n";
 
     // Find intersection
-    Node<int>* intersectNode = Intersection(n1, n3);
+    Node<int>* intersectNode = intersection(n1, n3);
 
     // Display the result
     if (intersectNode != nullptr) 
