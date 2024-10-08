@@ -55,8 +55,7 @@ FOLLOW UP
 Suppose the digits are stored in forward order. Repeat the above problem.
 EXAMPLE
 lnput:(6 -> 1 -> 7) + (2 -> 9 -> 5).That is,617 + 295.
-Output: 9 -> 1 -> 2. That is, 912.
-*/
+Output: 9 -> 1 -> 2. That is, 912.	*/
 Node<int>* sumList(Node<int>* curr1, Node<int>* curr2, int carry=0);
 void test_sumList();
 

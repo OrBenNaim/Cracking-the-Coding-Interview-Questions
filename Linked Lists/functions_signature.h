@@ -62,5 +62,4 @@ template <class T>
 Node<T>* Intersection(Node<T>* head1, Node<T>* head2);
 
 
-
-#endif // LINKEDLIST_H
+#endif  // FUNCTIONSSIGNATURE_H
