@@ -1,11 +1,11 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
  
- #include <iostream>
+ //#include <iostream>
  #include <string>
  #include <unordered_map>
 
- #include "Linked_List.h"
+ #include "Linked_List.h"	// My header file
 
  using namespace std;
 
@@ -266,23 +266,23 @@
  	Node<T>* curr1 = head1;
  	Node<T>* curr2 = head2;
 
- 	while (curr1->m_next != nullptr) {
-         curr1 = curr1->m_next;
-         size1++;
-     }
+ 	while (curr1->m_next != nullptr) 
+	{
+        curr1 = curr1->m_next;
+        size1++;
+    }
 
-     while (curr2->m_next != nullptr) {
-         curr2 = curr2->m_next;
-         size2++;
-     }
-	
- 	// otherwise, both list have the same size.
+    while (curr2->m_next != nullptr) 
+	{
+        curr2 = curr2->m_next;
+        size2++;
+    }
 
  	// part 2: check the last tail of each list to know if the lists are intersected or not
  	if (curr1 != curr2) return nullptr;
 
 	
- 	// part 3: move the pointer of the shorter list to his head, and the pointer of the longer list to his head + (abs(size1-size2)))
+ 	// part 3: move the pointer of the shorter list to his head, and the pointer of the longer list to head + (abs(size1-size2)))
  	curr1 = head1;
  	curr2 = head2;
 	
@@ -312,5 +312,47 @@
  	return curr1;
  }
  //----------------------------------------------------------------------------------------------------
- 
- #endif // !FUNCTIONS_H
+
+
+
+/* (2.8) Loop Detection: Given a circular linked list, implement an algorithm that returns the node at the
+beginning of the loop.
+DEFINITION
+Circular linked list: A (corrupt) linked list in which a node's next pointer points to an earlier node, so
+as to make a loop in the linked list.
+EXAMPLE
+Input: A -> B -> C -> D -> E -> C [the same C as earlier]
+Output: C 	*/
+
+template <class T>
+Node<T>* loopDetection(Node<T>* head)
+{
+	// Part 1: check if a loop exists 
+	Node<T>* slow = head;
+	Node<T>* fast = head;
+
+	while (fast != nullptr || fast->m_next != nullptr)
+	{
+		fast = (fast->m_next)->m_next;
+
+		slow = slow->m_next;
+
+		if (slow == fast) break;
+	}
+
+	if (fast == nullptr || fast->m_next == nullptr) return nullptr;		// if there is no loop exists
+
+	
+	// Part 2: find the start of the loop
+	slow = head;
+
+	while (slow != fast)
+	{
+		slow = slow->m_next;
+		fast = fast->m_next;
+	}
+	return slow;
+}
+
+
+#endif // !FUNCTIONS_H

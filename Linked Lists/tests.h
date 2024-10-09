@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
 
 #include "functions.h"
 
@@ -281,6 +280,42 @@ void test_intersection()
 
 
 //-------------------- Test for 2.8 problem --------------------
+void test_loopDetection()
+{
+	cout << "\nOutput of Question 2.8:" << endl;
+
+	Node<char>* n1 = new Node<char>('A'); 
+	Node<char>* n2 = new Node<char>('B'); 
+	n1->m_next = n2;
+	
+	Node<char>* n3 = new Node<char>('C'); 
+	n2->m_next = n3;
+
+	Node<char>* n4 = new Node<char>('D');
+	n3->m_next = n4;
+
+	Node<char>* n5 = new Node<char>('E');
+	n4->m_next = n5;
+
+	n5->m_next = n3;	// Create a circular linked list
+
+	try
+	{
+		cout << "The Linked List: ";
+		Node<char>* curr = n1;
+		for (unsigned int i = 0; i < 6; i++)
+		{
+			cout << curr << " -> ";
+			curr = curr->m_next;
+		}
+		
+		cout << "\nThe node at the beginning of the loop is: " << loopDetection(n1) << "\n" << endl;
+	}
+	catch(const exception& e)
+	{
+		cerr << e.what() << '\n';
+	}
+}
 
 
 #endif  // !TESTS_H

@@ -15,15 +15,15 @@ struct Node
     // Constructor to initialize node data
     Node(T data=T()) : m_data(data), m_next(nullptr) {}
 
-    friend ostream& operator<<(ostream& os, const Node<T>& node)
+    friend ostream& operator<<(ostream& os, const Node<T>* node)
     {
-        os << node.m_data;
+        os << node->m_data;
         return os;
     }
 
-    friend istream& operator>>(istream& is, const Node<T>& node)
+    friend istream& operator>>(istream& is, const Node<T>* node)
     {
-        is >> node.m_data; // Input into the current element
+        is >> node->m_data;     // Input into the current element
         
         return is;
     }

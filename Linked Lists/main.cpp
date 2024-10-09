@@ -29,6 +29,8 @@ int main()
     test_intersection();        // Test problem 2.7
 
     cout << "----------------------------------------------------------";
+
+    test_loopDetection();       // Test problem 2.8
     
     return 0;
 }
